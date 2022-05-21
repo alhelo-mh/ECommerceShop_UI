@@ -37,6 +37,9 @@ dependencies:
   backdrop: ^0.4.7
   carousel_pro: ^1.0.0
   flutter_swiper: ^1.1.6
+  cached_network_image: ^2.5.1
+  wave: ^0.2.0
+  image_picker: ^0.8.0+4
 
 dev_dependencies:
   flutter_test:

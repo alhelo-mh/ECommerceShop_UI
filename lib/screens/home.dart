@@ -1,5 +1,7 @@
 import 'package:ECommerceApp/consts/colors.dart';
 import 'package:ECommerceApp/inner_screens/brands_navigation_rail.dart';
+import 'package:ECommerceApp/provider/products.dart';
+import 'package:ECommerceApp/screens/feeds.dart';
 import 'package:ECommerceApp/widget/backlayer.dart';
 import 'package:ECommerceApp/widget/category.dart';
 import 'package:ECommerceApp/widget/popular_products.dart';
@@ -9,8 +11,7 @@ import 'package:backdrop/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-
-import '../inner_screens/brands_navigation_rail.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -36,6 +37,9 @@ class _HomeState extends State<Home> {
   ];
   @override
   Widget build(BuildContext context) {
+    final productsData = Provider.of<Products>(context);
+    final popularItems = productsData.popularProducts;
+    print('popularItems length ${popularItems.length}');
     return Scaffold(
       body: BackdropScaffold(
         frontLayerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -185,7 +189,9 @@ class _HomeState extends State<Home> {
                     ),
                     Spacer(),
                     FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Feeds.routeName, arguments: 'popular');
+                      },
                       child: Text(
                         'View all...',
                         style: TextStyle(
@@ -203,9 +209,17 @@ class _HomeState extends State<Home> {
                 margin: EdgeInsets.symmetric(horizontal: 3),
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 8,
+                    itemCount: popularItems.length,
                     itemBuilder: (BuildContext ctx, int index) {
-                      return PopularProducts();
+                      return ChangeNotifierProvider.value(
+                        value: popularItems[index],
+                        child: PopularProducts(
+                            // imageUrl: popularItems[index].imageUrl,
+                            // title: popularItems[index].title,
+                            // description: popularItems[index].description,
+                            // price: popularItems[index].price,
+                            ),
+                      );
                     }),
               )
             ],
